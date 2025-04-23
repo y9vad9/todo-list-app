@@ -116,3 +116,4 @@ platform/ios/todolist.xcworkspace/
 # Optional: Exclude documentation or screenshots if generated automatically
 platform/ios/*.md
 platform/ios/screenshot/
+/platform/ios/Frameworks/
