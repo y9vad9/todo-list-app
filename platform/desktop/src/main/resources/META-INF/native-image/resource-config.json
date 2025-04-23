@@ -1,0 +1,10 @@
+{
+  "resources": [
+    {
+      "pattern": "META-INF/services/.*"
+    },
+    {
+      "pattern": "org/sqlite/native/.*"
+    }
+  ]
+}

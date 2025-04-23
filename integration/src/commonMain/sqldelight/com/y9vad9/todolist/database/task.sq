@@ -1,0 +1,97 @@
+CREATE TABLE IF NOT EXISTS task (
+  id            INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name          TEXT    NOT NULL,
+  description   TEXT    NOT NULL,
+  created_at    TEXT    NOT NULL,
+  due           TEXT    NOT NULL,
+  status        TEXT    NOT NULL CHECK(status IN ('scheduled', 'in_progress', 'completed')),
+  started_at    TEXT,
+  completed_at  TEXT
+);
+
+insertTask:
+INSERT INTO task(name, description, created_at, due, status)
+VALUES (?, ?, ?, ?, 'scheduled');
+
+getTaskById:
+SELECT * FROM task WHERE id = ?;
+
+updateTask:
+UPDATE task
+SET
+  name        = COALESCE(:name, name),
+  description = COALESCE(:description, description),
+  due         = COALESCE(:due, due)
+WHERE id = ?;
+
+deleteTask:
+DELETE FROM task WHERE id = ?;
+
+selectAll:
+SELECT * FROM task
+WHERE (:filter == '' OR name LIKE '%' || :filter || '%' OR description LIKE '%' || :filter || '%')
+AND (
+  :includeScheduled OR :includeInProgress OR :includeCompleted OR 1=0
+)
+AND (
+  (status = 'scheduled'   AND :includeScheduled)
+  OR (status = 'in_progress' AND :includeInProgress)
+  OR (status = 'completed'   AND :includeCompleted)
+)
+ORDER BY created_at;
+
+
+getTasksWithDueBetween:
+SELECT * FROM task
+WHERE due BETWEEN :start AND :end
+AND status != 'completed'
+ORDER BY due;
+
+
+getScheduledTasks:
+SELECT * FROM task
+WHERE status = 'scheduled'
+ORDER BY due;
+
+getInProgressTasks:
+SELECT * FROM task
+WHERE status = 'in_progress'
+ORDER BY started_at;
+
+getCompletedTasks:
+SELECT * FROM task
+WHERE status = 'completed'
+ORDER BY completed_at;
+
+selectDueTasks:
+SELECT * FROM task
+WHERE due < ?
+AND status != 'completed'
+ORDER BY due;
+
+
+selectCreatedAfter:
+SELECT * FROM task
+WHERE created_at > ?
+ORDER BY created_at;
+
+moveToInProgress:
+UPDATE task
+SET status = 'in_progress',
+    started_at = ?
+WHERE id = ? AND status = 'scheduled';
+
+selectTaskAfterMoveToInProgress:
+SELECT * FROM task WHERE id = ?;
+
+moveToCompleted:
+UPDATE task
+SET status = 'completed',
+    completed_at = ?
+WHERE id = ? AND status = 'in_progress';
+
+selectTaskAfterMoveToCompleted:
+SELECT * FROM task WHERE id = ?;
+
+getLastInsertedId:
+SELECT last_insert_rowid();
