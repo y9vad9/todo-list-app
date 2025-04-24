@@ -69,7 +69,7 @@ Below are screenshots of all major screens available in the mobile version. The 
 |---------------------------------------------------------|---------------------------------------------------------|--------------------------------------------------------|
 | ![](docs/images/ios-app-screenshots/important-page.jpg) | ![](docs/images/ios-app-screenshots/view-task-page.jpg) | ![](docs/images/ios-app-screenshots/settings-page.jpg) |
 
-### 🖥Desktop
+### Desktop
 
 To see the application in action on a desktop, check out this short video demo:
 
