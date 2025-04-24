@@ -47,6 +47,10 @@ object GermanStrings : Strings {
     override val categoryTitle: String = "Kategorie"
     override val createdAtTitle: String = "Erstellt am"
 
+    override fun seconds(amount: Int): String {
+        return "10 Sekunden"
+    }
+
     override fun minutes(amount: Int): String =
         if (amount == 1) "$amount Minute" else "$amount Minuten"
 
@@ -81,6 +85,14 @@ object GermanStrings : Strings {
 
     override fun dueFor(formatted: String): String =
         "Seit $formatted überfällig"
+
+    override fun wasDueFor(formatted: String): String {
+        return "War fällig für $formatted"
+    }
+
+    override fun wasCompletedEarlier(formatted: String): String {
+        return "$formatted früher fertig"
+    }
 
     override fun internalErrorMessage(t: Throwable): String =
         "Ein interner Fehler ist aufgetreten: ${t.message}"

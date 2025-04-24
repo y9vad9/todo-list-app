@@ -130,7 +130,7 @@ class ListCommand(
         row {
             cell(task.id.int)
             cell(task.name.string.ellipsize(15))
-            cell(currentTime.timeUntilDue(task.due, strings)) {
+            cell(task.timeUntilDue(currentTime, strings)) {
                 val durationUtilDue = task.due - currentTime
 
                 style = when {

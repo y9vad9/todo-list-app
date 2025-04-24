@@ -47,6 +47,9 @@ object EnglishStrings : Strings {
     override val dueOrOverdueTitle: String = "Due / Overdue"
     override val categoryTitle: String = "Category"
     override val createdAtTitle: String = "Created At"
+    override fun seconds(amount: Int): String {
+        return "$amount seconds"
+    }
 
     override fun minutes(amount: Int): String =
         if (amount == 1) "$amount minute" else "$amount minutes"
@@ -82,6 +85,14 @@ object EnglishStrings : Strings {
 
     override fun dueFor(formatted: String): String =
         "$formatted overdue"
+
+    override fun wasDueFor(formatted: String): String {
+        return "Was due for $formatted"
+    }
+
+    override fun wasCompletedEarlier(formatted: String): String {
+        return "Done earlier by $formatted"
+    }
 
     override fun internalErrorMessage(t: Throwable): String =
         "An internal error occurred: ${t.message}"

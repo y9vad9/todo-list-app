@@ -1,15 +1,10 @@
 package com.y9vad9.todolist.cli.commands
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
-import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
-import com.github.ajalt.clikt.parameters.options.convert
-import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.mordant.markdown.Markdown
-import com.github.ajalt.mordant.rendering.TextColors
 import com.y9vad9.ktiny.kotlidator.createOr
 import com.y9vad9.todolist.cli.ext.formatToLocalString
 import com.y9vad9.todolist.cli.ext.timeUntilDue
@@ -41,17 +36,23 @@ class ViewCommand(
                 echo(strings.internalErrorMessage(result.error), err = true)
                 return
             }
+
             GetTaskUseCase.Result.NotFound -> {
                 echo(strings.taskNotFoundMessage, err = true)
                 return
             }
+
             is GetTaskUseCase.Result.Success -> result.task
         }
 
         val markdown = buildString {
             appendLine("# ${task.name.string}")
             appendLine("- ${strings.idTitle}: ${task.id.int}")
-            appendLine("- ${strings.dueOrOverdueTitle}: ${clock.now().timeUntilDue(task.due, strings)}")
+            appendLine(
+                "- ${strings.dueOrOverdueTitle}: ${
+                    task.timeUntilDue(clock.now(), strings)
+                }"
+            )
             appendLine("- ${strings.createdAtTitle}: ${task.createdAt.formatToLocalString()}")
 
             when (task) {
@@ -60,14 +61,17 @@ class ViewCommand(
                     appendLine("- ${strings.completedAtTitle}: ${task.completedAt.formatToLocalString()}")
                     appendLine("- ${strings.timeSpent}: ${task.timeSpent}")
                 }
+
                 is InProgressTask -> {
                     appendLine("- ${strings.startedAtTitle}: ${task.startedAt.formatToLocalString()}")
                 }
+
                 is PlannedTask -> {}
             }
 
             appendLine("_______")
-            appendLine(task.description.string.takeIf { it.isNotBlank() } ?: "*${strings.noTaskDescriptionProvidedMessage}*")
+            appendLine(task.description.string.takeIf { it.isNotBlank() }
+                ?: "*${strings.noTaskDescriptionProvidedMessage}*")
         }
 
 

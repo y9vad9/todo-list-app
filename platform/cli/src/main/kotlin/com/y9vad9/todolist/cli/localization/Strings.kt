@@ -34,6 +34,7 @@ interface Strings {
     val categoryTitle: String
     val createdAtTitle: String
 
+    fun seconds(amount: Int): String
     fun minutes(amount: Int): String
     fun hours(amount: Int): String
     fun days(amount: Int): String
@@ -53,6 +54,8 @@ interface Strings {
 
     fun dueIn(formatted: String): String
     fun dueFor(formatted: String): String
+    fun wasDueFor(formatted: String): String
+    fun wasCompletedEarlier(formatted: String): String
 
     fun internalErrorMessage(t: Throwable): String
 
