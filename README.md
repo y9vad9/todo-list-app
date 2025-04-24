@@ -39,8 +39,6 @@ todolist
 │   └── cli            # CLI entry point (Clikt + GraalVM)
 ```
 
----
-
 ## How to Run the App
 
 You can find prebuilt executables for the following platforms in the [Releases](./releases) section:
@@ -57,24 +55,24 @@ For other platforms:
 
 ## Screenshots / Demo
 
-# Mobile
+### Mobile
 |                                                         |                                                           |
 |---------------------------------------------------------|-----------------------------------------------------------|
 | ![](docs/images/ios-app-screenshots/all-tasks-page.jpg) | ![](docs/images/ios-app-screenshots/create-task-page.jpg) |
 | ![](docs/images/ios-app-screenshots/edit-task-page.jpg) | ![](docs/images/ios-app-screenshots/important-page.jpg)   |
 | ![](docs/images/ios-app-screenshots/settings-page.jpg)  | ![](docs/images/ios-app-screenshots/view-task-page.jpg)   |
 
-# Desktop
+### Desktop
+https://github.com/user-attachments/assets/e7fb61fc-1467-4035-aaa5-24ac7312089c
+
 
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
----
-
 ## Author
 
-Maintained by [Vadym Yaroshchuk](https://github.com/Y9vad9) as part of an interview test task.
+Maintained by [Vadym Yaroshchuk](https://github.com/Y9vad9).
 
 Feedback welcome! If you find the project useful, feel free to contribute or reach out.
 
