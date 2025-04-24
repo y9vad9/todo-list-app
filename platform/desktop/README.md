@@ -35,8 +35,6 @@ If you're using **macOS**, you may find a prebuilt native version available on t
 
 ## Shared Modules
 
-## Shared Modules
-
 This module integrates with the following shared logic layers:
 - `domain`: business logic and domain model
 - `presentation`: MVI-based UI logic
