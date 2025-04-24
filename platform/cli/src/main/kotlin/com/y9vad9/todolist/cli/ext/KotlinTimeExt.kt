@@ -7,7 +7,9 @@ import java.util.Locale
 import kotlin.time.Duration.Companion.days
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toKotlinInstant
+import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalTime::class)
 internal fun Instant.timeUntilDue(due: Instant, strings: Strings): String {
@@ -59,4 +61,24 @@ fun String.parseToInstant(): Instant? {
     }
 
     return null
+}
+
+fun Instant.formatToLocalString(
+    timeZone: TimeZone = TimeZone.currentSystemDefault(),
+    locale: Locale = Locale.getDefault(),
+    pattern: String = "yyyy-MM-dd HH:mm"
+): String {
+    val localDateTime = this.toLocalDateTime(timeZone)
+    val javaLocalDateTime = java.time.LocalDateTime.of(
+        localDateTime.date.year,
+        localDateTime.date.monthNumber,
+        localDateTime.date.dayOfMonth,
+        localDateTime.time.hour,
+        localDateTime.time.minute,
+        localDateTime.time.second,
+        localDateTime.time.nanosecond
+    )
+
+    val formatter = DateTimeFormatter.ofPattern(pattern, locale)
+    return javaLocalDateTime.format(formatter)
 }

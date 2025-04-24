@@ -1,6 +1,8 @@
 package com.y9vad9.todolist.cli.commands
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
@@ -16,14 +18,13 @@ class StartCommand(
     private val moveScheduledTaskToInProgressUseCase: MoveScheduledTaskToInProgressUseCase,
     private val strings: Strings,
 ) : SuspendingCliktCommand() {
-    private val id: TaskId by option(
-        names = arrayOf("--id"),
+    private val id: TaskId by argument(
         help = strings.taskIdOptionDescription,
-    ).int(acceptsValueWithoutName = true).restrictTo(1..Int.MAX_VALUE).convert {
+    ).int().restrictTo(1..Int.MAX_VALUE).convert {
         TaskId.factory.createOr(it) {
             fail(strings.idCannotBeNegativeMessage)
         }
-    }.required()
+    }
 
     override suspend fun run() {
         when (val result = moveScheduledTaskToInProgressUseCase.execute(id)) {

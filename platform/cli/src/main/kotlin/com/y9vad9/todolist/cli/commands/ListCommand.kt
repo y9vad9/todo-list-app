@@ -16,6 +16,8 @@ import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.SectionBuilder
 import com.github.ajalt.mordant.table.Table
 import com.github.ajalt.mordant.table.table
+import com.y9vad9.todolist.cli.ext.ellipsize
+import com.y9vad9.todolist.cli.ext.formatToLocalString
 import com.y9vad9.todolist.cli.ext.timeUntilDue
 import com.y9vad9.todolist.cli.localization.Strings
 import com.y9vad9.todolist.domain.type.*
@@ -34,7 +36,6 @@ class ListCommand(
     companion object {
         const val ITEMS_PER_PAGE = 10
     }
-
     private val categories by option(
         names = arrayOf("--category"),
         help = strings.listCommand.categoryOptionDescription,
@@ -68,6 +69,8 @@ class ListCommand(
             }
 
             is ListAllTasksUseCase.Result.Success -> tasksResult.tasks
+        }.filter {
+            if (shouldOnlyPrintDueTasks) it.isDue(clock.now()) else true
         }.chunked(ITEMS_PER_PAGE)
 
         val table = tasksTable(
@@ -77,13 +80,6 @@ class ListCommand(
         )
 
         echo(table)
-
-        // fill the remaining space to make effect of 'full-screen output'
-        val blankLines = terminal.size.height - table.render(terminal).lines.size
-
-        repeat(blankLines.takeIf { it > 0 } ?: 0) {
-            echo("")
-        }
     }
 
     private fun tasksTable(
@@ -133,7 +129,7 @@ class ListCommand(
     private fun SectionBuilder.taskRow(task: Task, currentTime: Instant) {
         row {
             cell(task.id.int)
-            cell(task.name.string)
+            cell(task.name.string.ellipsize(15))
             cell(currentTime.timeUntilDue(task.due, strings)) {
                 val durationUtilDue = task.due - currentTime
 
@@ -150,7 +146,7 @@ class ListCommand(
                     is PlannedTask -> strings.planedTitle
                 }
             )
-            cell(task.createdAt)
+            cell(task.createdAt.formatToLocalString())
         }
     }
 }

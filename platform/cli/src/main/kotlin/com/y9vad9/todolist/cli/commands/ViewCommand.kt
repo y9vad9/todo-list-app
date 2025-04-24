@@ -11,6 +11,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.mordant.markdown.Markdown
 import com.github.ajalt.mordant.rendering.TextColors
 import com.y9vad9.ktiny.kotlidator.createOr
+import com.y9vad9.todolist.cli.ext.formatToLocalString
 import com.y9vad9.todolist.cli.ext.timeUntilDue
 import com.y9vad9.todolist.cli.localization.Strings
 import com.y9vad9.todolist.domain.type.CompletedTask
@@ -51,15 +52,16 @@ class ViewCommand(
             appendLine("# ${task.name.string}")
             appendLine("- ${strings.idTitle}: ${task.id.int}")
             appendLine("- ${strings.dueOrOverdueTitle}: ${clock.now().timeUntilDue(task.due, strings)}")
-            appendLine("- ${strings.createdAtTitle}: ${task.createdAt}")
+            appendLine("- ${strings.createdAtTitle}: ${task.createdAt.formatToLocalString()}")
 
             when (task) {
                 is CompletedTask -> {
-                    appendLine("- ${strings.completedAtTitle}: ${task.completedAt}")
+                    appendLine("- ${strings.startedAtTitle}: ${task.startedAt.formatToLocalString()}")
+                    appendLine("- ${strings.completedAtTitle}: ${task.completedAt.formatToLocalString()}")
                     appendLine("- ${strings.timeSpent}: ${task.timeSpent}")
                 }
                 is InProgressTask -> {
-                    appendLine("- ${strings.startedAtTitle}: ${task.startedAt}")
+                    appendLine("- ${strings.startedAtTitle}: ${task.startedAt.formatToLocalString()}")
                 }
                 is PlannedTask -> {}
             }

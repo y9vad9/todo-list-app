@@ -61,7 +61,6 @@ suspend fun main(args: Array<String>) {
     ).koin
 
 
-    // todo
     val strings = when (Locale.getDefault()) {
         Locale.GERMAN -> GermanStrings
         else -> EnglishStrings

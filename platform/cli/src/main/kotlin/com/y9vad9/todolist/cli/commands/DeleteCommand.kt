@@ -1,6 +1,8 @@
 package com.y9vad9.todolist.cli.commands
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
@@ -14,14 +16,13 @@ class DeleteCommand(
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val strings: Strings,
 ) : SuspendingCliktCommand() {
-    private val id: TaskId by option(
-        names = arrayOf("--id"),
+    private val id: TaskId by argument(
         help = strings.taskIdOptionDescription,
-    ).int(acceptsValueWithoutName = true).convert {
+    ).int().convert {
         TaskId.factory.createOr(it) {
             fail(strings.idCannotBeNegativeMessage)
         }
-    }.required()
+    }
 
     override suspend fun run() {
         when (val result = deleteTaskUseCase.execute(id)) {
