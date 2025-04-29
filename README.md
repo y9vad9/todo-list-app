@@ -1,5 +1,4 @@
-# TodoList
-
+# <img src="https://github.com/user-attachments/assets/a51b2a6a-7532-42bd-bbed-3a87080a31f1" alt="" height="40px" align="center" /> TodoList
 **TodoList** is a cross-platform to-do list application built using **Kotlin Multiplatform**. It supports Android, iOS, Desktop (via Compose Multiplatform), and a powerful CLI (via Clikt).
 
 ## Features
@@ -14,46 +13,6 @@
   - CLI: [ajalt/mordant](https://github.com/ajalt/mordant)
 - Search & filter tasks by name, description, and status
 - Supports English and German languages for all targets (Android, iOS, Desktop and CLI)
-
-## Dependencies
-
-- [Clikt](https://github.com/ajalt/clikt) – CLI command parsing
-- [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) – UI for Android, Desktop, iOS
-- [SQLDelight](https://github.com/cashapp/sqldelight) – Type-safe SQL database
-- [Decompose](https://github.com/arkivanov/Decompose) – Navigation
-- [Koin](https://insert-koin.io) – Dependency Injection
-- [Kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) – For settings & state retention
-- [flowmvi](https://github.com/MichaelRocks/FlowMVI) – MVI architecture
-- [GraalVM Native Image](https://www.graalvm.org/) – To compile CLI app to native binary
-
-```
-todolist
-├── domain             # Core domain logic (DDD-style, reused across all platforms)
-├── presentation       # MVI layer for Compose UI
-├── compose-ui         # Shared Compose UI module for Android, iOS, Desktop
-├── integration        # Data implementations of domain repositories
-├── dependencies       # Koin DI module to decouple and keep other modules clean
-├── platform
-│   ├── android        # Android entry point
-│   ├── desktop        # Desktop entry point
-│   ├── cli            # CLI entry point (Clikt + GraalVM)
-│   └── ios            # iOS entry point (Xcode project for building KMP iOS app)
-```
-You may also reference to per-module README for more information, for example, about how to build it (if it's a platform module) or what is the purpose of the module.
-
-## How to Run the App
-
-You can find prebuilt executables for the following platforms in the [Releases](./releases) section:
-
-- Android – APK included
-- macOS – Desktop binary
-- CLI – Native GraalVM binary
-
-For other platforms:
-- Clone the repo
-- Make sure Kotlin Multiplatform and your platform SDKs are configured
-- Run the appropriate target from the root `build.gradle.kts`
-
 
 ## Screenshots / Demo
 
@@ -80,13 +39,91 @@ The command-line interface offers a fast and scriptable way to manage tasks. It 
 
 https://github.com/user-attachments/assets/4b98d5e8-aee7-485f-920f-25b8dc86a016
 
+## Running the App
+
+You can find prebuilt executables for the following platforms in the [Releases](./releases) section:
+
+- Android – APK included
+- macOS – Desktop binary
+- CLI – Native GraalVM binary
+
+For other platforms:
+- Clone the repo
+- Make sure Kotlin Multiplatform and your platform SDKs are configured
+- Run the appropriate target from the root `build.gradle.kts`
+
+## Project structure
+Here is brief description of each module (you may refer to the per-module README for more information).
+```
+todolist
+├── domain             # Core domain logic (DDD-style, reused across all platforms)
+├── presentation       # MVI layer for Compose UI
+├── compose-ui         # Shared Compose UI module for Android, iOS, Desktop
+├── integration        # Data implementations of domain repositories
+├── dependencies       # Koin DI module to decouple and keep other modules clean
+├── platform
+│   ├── android        # Android entry point
+│   ├── desktop        # Desktop entry point
+│   ├── cli            # CLI entry point (Clikt + GraalVM)
+│   └── ios            # iOS entry point (Xcode project for building KMP iOS app)
+```
+### Modules relations
+The relations of the modules are the following:
+```mermaid
+graph LR
+
+%% Core modules
+domain[domain]
+presentation[presentation]
+integration[integration]
+
+%% Shared modules
+compose_ui[compose-ui]
+dependencies[dependencies]
+
+%% Platform groups
+subgraph UI Platforms
+    android[platform:android]
+    desktop[platform:desktop]
+    ios[platform:ios]
+end
+
+subgraph CLI Platform
+    cli[platform:cli]
+end
+
+%% Shared module connections
+compose_ui --> presentation
+dependencies --> presentation
+dependencies --> integration
+presentation --> domain
+
+%% CLI-specific connections
+cli --> domain
+cli --> dependencies
+
+%% UI platform connections (only direct)
+android --> compose_ui
+android --> dependencies
+
+desktop --> compose_ui
+desktop --> dependencies
+
+ios --> compose_ui
+ios --> dependencies
+```
+
+## Dependencies
+
+- [Clikt](https://github.com/ajalt/clikt) – CLI command parsing
+- [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) – UI for Android, Desktop, iOS
+- [SQLDelight](https://github.com/cashapp/sqldelight) – Type-safe SQL database
+- [Decompose](https://github.com/arkivanov/Decompose) – Navigation
+- [Koin](https://insert-koin.io) – Dependency Injection
+- [Kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) – For settings & state retention
+- [flowmvi](https://github.com/MichaelRocks/FlowMVI) – MVI architecture
+- [GraalVM Native Image](https://www.graalvm.org/) – To compile CLI app to native binary
 
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-
-## Author
-
-Maintained by [Vadym Yaroshchuk](https://github.com/Y9vad9).
-
-Feedback welcome! If you find the project useful, feel free to contribute or reach out.
