@@ -56,5 +56,5 @@ Once the framework is copied and the project is open:
 ## Additional Notes
 
 - The app reuses the same business logic as other platform targets (Android, Desktop, CLI) via Kotlin Multiplatform
-- UI and navigation are written in Swift/SwiftUI and integrate with Compose via the shared `ComposeUIViewController`
+- UI and navigation are written with Compose and integrated with Swift via `ComposeUIViewController` in `:platform:shared/iosMain`.
 - If you're only interested in running the app, check the [Releases page](https://github.com/y9vad9/todo-list-app/releases) for a prebuilt `.ipa` (not available for now)
