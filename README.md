@@ -1,4 +1,9 @@
 # <img src="https://github.com/user-attachments/assets/a51b2a6a-7532-42bd-bbed-3a87080a31f1" alt="" height="40px" align="center" /> TodoList
+![Android](https://img.shields.io/badge/platform-Android-green?logo=android&logoColor=white)
+![iOS](https://img.shields.io/badge/platform-iOS-blue?logo=apple&logoColor=white)
+![JVM (Desktop)](https://img.shields.io/badge/platform-Desktop%2FJVM-red?logo=computer&logoColor=white)
+![JVM (CLI)](https://img.shields.io/badge/platform-CLI%2FJVM-blueviolet?logo=terminal&logoColor=white)
+
 **TodoList** is a cross-platform to-do list application built using **Kotlin Multiplatform**. It supports Android, iOS, Desktop (via Compose Multiplatform), and a powerful CLI (via Clikt).
 
 ## Features
@@ -40,8 +45,9 @@ The command-line interface offers a fast and scriptable way to manage tasks. It 
 https://github.com/user-attachments/assets/4b98d5e8-aee7-485f-920f-25b8dc86a016
 
 ## Running the App
+![GitHub Release](https://img.shields.io/github/v/release/y9vad9/todo-list-app) 
 
-You can find prebuilt executables for the following platforms in the [Releases](./releases) section:
+You can find prebuilt executables for the following platforms in the [Releases](https://github.com/y9vad9/todo-list-app/releases) section:
 
 - Android – APK included
 - macOS – Desktop binary
@@ -78,6 +84,7 @@ presentation[presentation]
 integration[integration]
 
 %% Shared modules
+shared[platform:shared]
 compose_ui[compose-ui]
 dependencies[dependencies]
 
@@ -93,8 +100,9 @@ subgraph CLI Platform
 end
 
 %% Shared module connections
+shared --> compose_ui
+shared --> dependencies
 compose_ui --> presentation
-dependencies --> presentation
 dependencies --> integration
 presentation --> domain
 
@@ -103,14 +111,11 @@ cli --> domain
 cli --> dependencies
 
 %% UI platform connections (only direct)
-android --> compose_ui
-android --> dependencies
+android --> shared
 
-desktop --> compose_ui
-desktop --> dependencies
+desktop --> shared
 
-ios --> compose_ui
-ios --> dependencies
+ios --> shared
 ```
 
 ## Dependencies
